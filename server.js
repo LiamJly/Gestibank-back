@@ -32,7 +32,7 @@ MongoClient.connect(url, function (err, client) {
     db = client.db(dbName);
 });
 
-
+/*
 app.get('/users', (req, res) => {
     db.collection('user').find({}).toArray(function (err, docs) {
         if (err) {
@@ -91,7 +91,12 @@ app.delete('/users/:id', async (req, res) => {
         console.log(err)
         throw err
     }
-});
+}); */
+
+
+
+//****************************** AGENT Related routes *************************//
+
 app.get('/agent/list', (req, res) => {
     db.collection('user').find({
         "role": "agent"
@@ -115,6 +120,7 @@ app.post('/agent/add', async (req, res) => {
 });
 
 
+//****************************** ADMIN Related routes *************************//
 app.get('/admin/list', (req, res) => {
     db.collection('user').find({
         "role": "admin"
@@ -127,7 +133,8 @@ app.get('/admin/list', (req, res) => {
     })
 })
 
-//CLIENT API
+
+//****************************** CLIENT Related routes *************************//
 app.get('/client/list', (req, res) => {
     db.collection('user').find({
         "role": "client"
