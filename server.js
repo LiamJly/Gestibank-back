@@ -150,6 +150,21 @@ app.get('/admin/list', (req, res) => {
     })
 })
 
+app.get('/admin/:email', (req, res) => {
+    const email = req.params.email;
+    db.collection('user').find({
+        "role": "admin", email
+    }).toArray(function (err, docs) {
+        if (err) {
+            console.log(err)
+            throw err
+        }
+        res.status(200).json(docs)
+    })
+})
+
+
+
 
 //****************************** CLIENT Related routes *************************//
 app.get('/client/list', (req, res) => {
