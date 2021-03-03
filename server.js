@@ -7,7 +7,12 @@ app.use(express.json());
 
 var corsOptions = {
     //origin: "http://localhost:4200"
-    origin: "*"
+   //origin: "*",
+   "Access-Control-Allow-Origin": "*",
+   "Access-Control-Allow-Methods": "POST, GET"
+
+
+
 };
 
 app.use(cors(corsOptions));
@@ -108,6 +113,18 @@ app.get('/agent/list', (req, res) => {
         res.status(200).json(docs)
     })
 })
+app.get('/agent/list/attente', (req, res) => {
+    db.collection('user').find({
+        "role": "agent", "status": "en attente"
+    }).toArray(function (err, docs) {
+        if (err) {
+            console.log(err)
+            throw err
+        }
+        res.status(200).json(docs)
+    })
+})
+
 app.post('/agent/add', async (req, res) => {
     try {
         const newAgent = req.body
