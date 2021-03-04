@@ -8,7 +8,7 @@ app.use(express.json());
 var corsOptions = {
     //origin: "http://localhost:4200"
    //origin: "*",
-   "Access-Control-Allow-Origin": "*",
+   "Access-Control-Allow-Origin": "http://192.168.1.17:85/",
    "Access-Control-Allow-Methods": "POST, GET"
 
 
@@ -212,4 +212,21 @@ app.post('/client/add', async (req, res) => {
         console.log(err)
         throw err
     }
+});
+
+
+//****************************** USER Related routes *************************//
+app.get("/user/:email", (req, res) => {
+  const email = req.params.email;
+  db.collection("user")
+    .find({
+      email,
+    })
+    .toArray(function (err, docs) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+      res.status(200).json(docs);
+    });
 });
