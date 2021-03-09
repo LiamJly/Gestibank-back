@@ -214,6 +214,21 @@ app.post('/client/add', async (req, res) => {
     }
 });
 
+app.put("/clientforAgent/:email", async (req, res) => {
+  try {
+    const login = req.params.email;
+    const replacementUser = req.body;
+    const user = await db.collection("user").update(
+      {
+        replacementUser,
+      },  
+    );
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+});
 
 //****************************** USER Related routes *************************//
 app.get("/user/:email", (req, res) => {
