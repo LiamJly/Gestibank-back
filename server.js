@@ -5,12 +5,16 @@ var nodemailer = require('nodemailer')
 const PORT = 85;
 app.use(express.json());
 
+var nodemailer = require('nodemailer');
+
 
 var corsOptions = {
     //origin: "http://localhost:4200"
    //origin: "*",
    "Access-Control-Allow-Origin": "http://192.168.1.17:8100/*",
    "Access-Control-Allow-Methods": "POST, GET"
+   "Access-Control-Allow-Origin": "http://192.168.1.31:85/",
+   "Access-Control-Allow-Methods": "*"
 
 
 
@@ -99,8 +103,6 @@ app.delete('/users/:id', async (req, res) => {
     }
 }); */
 
-
-
 //****************************** AGENT Related routes *************************//
 
 app.get('/agent/list', (req, res) => {
@@ -131,6 +133,18 @@ app.post('/agent/add', async (req, res) => {
         const newAgent = req.body
         const agent = await db.collection('user').insertOne(newAgent)
         res.status(200).json(agent)
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+});
+
+
+app.delete('/agent/:matricule', async (req, res) => {
+    try {
+        const matricule = req.params.matricule
+        const user = await db.collection('user').deleteOne({matricule})
+        res.status(200).json(user)
     } catch (err) {
         console.log(err)
         throw err
@@ -236,6 +250,18 @@ app.put("/forClient/:emailClient", async (req, res) => {
     throw err;
   }
 });
+app.get('/client/list/attente/:email', (req, res) => {
+    const email = req.params.email;
+    db.collection('user').find({
+        "role": "client", "status":"en attente", email
+    }).toArray(function (err, docs) {
+        if (err) {
+            console.log(err)
+            throw err
+        }
+        res.status(200).json(docs)
+    })
+})
 
 app.get("/client/:email", (req, res) => {
   db.collection("user")
@@ -288,6 +314,20 @@ app.get("/newClient/:email/:mdp", (req, res) => {
       res.status(200).json(docs);
     });
 });
+
+app.put('/client/:email', async (req, res) => {
+    try {
+        const email = req.params.email;
+        const replacement = req.body;
+        const user = await db.collection('user').updateOne({
+            "email": email
+        }, {$set: replacement})
+        res.status(200).json(user);
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+})
 
 //****************************** USER Related routes *************************//
 app.get("/user/:email", (req, res) => {
