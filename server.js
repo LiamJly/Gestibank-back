@@ -371,8 +371,8 @@ var transporter = nodemailer.createTransport({
   },
 });
 
-var mailClient = "sundabedelo@gmail.com";
-var password = "abc123";
+//var mailClient = "sundabedelo@gmail.com";
+//var password = "abc123";
 /*var mailOptions = {
   from: "gestibank2021@gmail.com",
   to: mailClient,
