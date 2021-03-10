@@ -12,9 +12,8 @@ var corsOptions = {
     //origin: "http://localhost:4200"
    //origin: "*",
    "Access-Control-Allow-Origin": "http://192.168.1.17:8100/*",
-   "Access-Control-Allow-Methods": "POST, GET"
-   "Access-Control-Allow-Origin": "http://192.168.1.31:85/",
    "Access-Control-Allow-Methods": "*"
+   
 
 
 
