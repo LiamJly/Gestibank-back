@@ -151,6 +151,20 @@ app.delete('/agent/:matricule', async (req, res) => {
 });
 
 
+app.get('/:agent/clients', (req,res)=>{
+    const agent = req.params.agent;
+    db.collection('user').find({
+        "role" : "client",
+        "agent" : agent
+    }).toArray(function (err, docs) {
+        if (err) {
+            console.log(err)
+            throw err
+        }
+        res.status(200).json(docs)
+    })
+})
+
 //****************************** ADMIN Related routes *************************//
 app.get('/admin/list', (req, res) => {
     db.collection('user').find({
