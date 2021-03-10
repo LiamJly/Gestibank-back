@@ -100,35 +100,6 @@ app.delete('/users/:id', async (req, res) => {
     }
 }); */
 
-
-
-//// send email //////////////////////////////////////////////////// 
-/*var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'gestitest37@gmail.com',
-      pass: '4Zer!y00'
-    }
-  });
-  
-  var mailClient = "";
-  var password = "";
-  var mailOptions = {
-    from: 'gestitest37@gmail.com',
-    to: '',
-    subject: 'Validation de création de compte GestiBank',
-    text: 'Félicitations votre compte a été créé avec succès: Login : '+ mailClient +" Votre mot de passe :"+password
-  };
-  
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
-*/
-
 //****************************** AGENT Related routes *************************//
 
 app.get('/agent/list', (req, res) => {
