@@ -155,6 +155,7 @@ app.get('/:agent/clients', (req,res)=>{
     const agent = req.params.agent;
     db.collection('user').find({
         "role" : "client",
+        "status": "en attente",
         "agent" : agent
     }).toArray(function (err, docs) {
         if (err) {
