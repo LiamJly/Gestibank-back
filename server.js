@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require("cors");
+var nodemailer = require('nodemailer')
 const PORT = 85;
 app.use(express.json());
 
@@ -214,20 +215,78 @@ app.post('/client/add', async (req, res) => {
     }
 });
 
-app.put("/clientforAgent/:email", async (req, res) => {
+app.put("/forClient/:emailClient", async (req, res) => {
   try {
-    const login = req.params.email;
+    const login = req.params.emailClient;
     const replacementUser = req.body;
     const user = await db.collection("user").update(
+      
       {
-        replacementUser,
-      },  
-    );
+        email: login
+      },
+      {
+          $set:
+              replacementUser,
+          
+      }
+      );
     res.status(200).json(user);
   } catch (err) {
     console.log(err);
     throw err;
   }
+});
+
+app.get("/client/:email", (req, res) => {
+  db.collection("user")
+    .find({
+      email: req.params.email,
+      
+    })
+    .toArray(function (err, docs) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+      res.status(200).json(docs);
+    });
+});
+
+app.get("/newClient/:email/:mdp", (req, res) => {
+    console.log("envoie mail!!")
+  db.collection("user")
+    .find({
+      email: req.params.email,
+      mdp: req.params.mdp,
+    })
+    .toArray(function (err, docs) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+     var email= req.params.email
+     var mdp = req.params.mdp
+     var mailOptions = {
+        from: "gestibank2021@gmail.com",
+        to: email,
+        subject: "Validation de création de compte GestiBank",
+        text:
+          "Félicitations votre compte a été créer avec succès Login : " +
+          email +
+          " Votre mot de passe :" +
+          mdp,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+
+      res.status(200).json(docs);
+    });
 });
 
 //****************************** USER Related routes *************************//
@@ -245,3 +304,40 @@ app.get("/user/:email", (req, res) => {
       res.status(200).json(docs);
     });
 });
+
+//*********************************************************************************** */
+
+
+
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "gestibank2021@gmail.com",
+    pass: "gkmars2021",
+  },
+});
+
+var mailClient = "sundabedelo@gmail.com";
+var password = "abc123";
+/*var mailOptions = {
+  from: "gestibank2021@gmail.com",
+  to: mailClient,
+  subject: "Validation de création de compte GestiBank",
+  text:
+    "Félicitations votre compte a été créer avec succès Login : " +
+    mailClient +
+    " Votre mot de passe :" +
+    password,
+};*/
+
+/*
+transporter.sendMail(mailOptions, function (error, info) {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log("Email sent: " + info.response);
+  }
+});
+*/
+
+//*********************************************************************************** */
