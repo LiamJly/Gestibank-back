@@ -208,6 +208,22 @@ app.get('/client/list', (req, res) => {
     })
 })
 
+app.get("/client/noAgent", (req, res) => {
+  db.collection("user")
+    .find({
+        role : "client",
+        status : "en attente",
+      agent: {$exists: false },
+    })
+    .toArray(function (err, docs) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+      res.status(200).json(docs);
+    });
+});
+
 app.get('/client/list/attente', (req, res) => {
     db.collection('user').find({
         "role": "client", "status":"en attente"
